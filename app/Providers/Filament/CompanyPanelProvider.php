@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\Company;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,11 +26,17 @@ class CompanyPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('company')
-            ->path('company')
+            ->path('companies')
             ->login()
+            ->profile()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#0047ab'), //Amber
             ])
+            ->authGuard('company')
+            ->login()
+            ->passwordReset()
+            ->authPasswordBroker('companies')
+            ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -38,7 +45,7 @@ class CompanyPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -53,6 +60,7 @@ class CompanyPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->tenant(Company::class, slugAttribute: 'slug', ownershipRelationship: 'owner');
     }
 }
