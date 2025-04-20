@@ -61,6 +61,10 @@ class CompanyPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->tenant(Company::class, slugAttribute: 'slug', ownershipRelationship: 'owner');
+            ->tenant(Company::class, slugAttribute: 'slug', ownershipRelationship: 'owner')
+            // ->plugins([
+            //     FilamentLoginLogs::make(),
+            // ])
+        ;
     }
 }
