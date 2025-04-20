@@ -26,7 +26,7 @@ class CompanyPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('company')
-            ->path('companies')
+            ->path('empresa') //companies
             ->login()
             ->profile()
             ->colors([
